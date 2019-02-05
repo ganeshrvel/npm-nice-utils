@@ -2,7 +2,7 @@
 
 import {
   isTouchDevice,
-  isiOS,
+  isIos,
   isImageLoaded,
   isElementLoaded,
   urls,
@@ -12,7 +12,7 @@ import {
 
 console.log(`isTouchDevice:`, isTouchDevice());
 
-console.log(`isiOS:`, isiOS());
+console.log(`isIos:`, isIos());
 
 isImageLoaded('https://sample-videos.com/img/Sample-jpg-image-500kb.jpg')
   .then(res => {
