@@ -560,3 +560,224 @@ export const netElementWidth = selector => {
 
   return total;
 };
+
+/**
+ * Checks whether the given variable is an integer
+ *
+ * @param n
+ * @returns {boolean}
+ */
+
+export const isInt = n => {
+  if (typeof n !== 'number') {
+    return false;
+  }
+  return Number(n) === n && n % 1 === 0;
+};
+
+/**
+ * Checks whether the given variable is a floating point
+ *
+ * @param n
+ * @returns {boolean}
+ */
+
+export const isFloat = n => {
+  if (typeof n !== 'number') {
+    return false;
+  }
+  return Number(n) === n && n % 1 !== 0;
+};
+
+/**
+ * Checks whether the given variable is a number of not
+ *
+ * @param n
+ * @returns {boolean}
+ */
+
+export const isNumber = n => {
+  return typeof n === 'number';
+};
+
+/**
+ * Converts the byte size into human readable format
+ *
+ * @param a
+ * @param b
+ * @returns {string}
+ */
+
+export const niceBytes = (a, b) => {
+  if (a === 0) {
+    return '0 Bytes';
+  }
+  const c = 1024;
+  const d = b || 2;
+  const e = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  const f = Math.floor(Math.log(a) / Math.log(c));
+  return `${parseFloat((a / Math.pow(c, f)).toFixed(d))} ${e[f]}`; // eslint-disable-line no-restricted-properties
+};
+
+/**
+ * Replace the string with matching patterns
+ *
+ * @param str
+ * @param findArray
+ * @param replaceArray
+ * @returns {string}
+ */
+
+export const replaceBulk = (str, findArray, replaceArray) => {
+  let i;
+  let regex = [];
+  const map = {};
+  for (i = 0; i < findArray.length; i += 1) {
+    regex.push(findArray[i].replace(/([-[\]{}()*+?.\\^$|#,])/g, '\\$1'));
+    map[findArray[i]] = replaceArray[i];
+  }
+  regex = regex.join('|');
+
+  return str.replace(new RegExp(regex, 'g'), matched => {
+    return map[matched];
+  });
+};
+
+/**
+ * Split a string into multiple lines
+ *
+ * @param str
+ * @returns {*}
+ */
+
+export const splitIntoLines = str => {
+  if (undefinedOrNull(str)) {
+    return null;
+  }
+  return str.toString().split(/(\r?\n)/g);
+};
+
+/**
+ * Quick hash for generating a unique id
+ *
+ * @param str
+ * @returns {number}
+ */
+
+export const quickHash = str => {
+  let hash = 0;
+  let i;
+  let chr;
+
+  if (str.length === 0) {
+    return hash;
+  }
+  for (i = 0; i < str.length; i += 1) {
+    chr = str.charCodeAt(i);
+    hash = (hash << 5) - hash + chr; // eslint-disable-line no-bitwise
+    hash |= 0; // eslint-disable-line no-bitwise
+  }
+  return hash;
+};
+
+/**
+ * Spring trucate a given string
+ *
+ * @param str
+ * @param minChars
+ * @param ellipsis
+ * @returns {object}
+ */
+
+export const springTruncate = (str, minChars = 10, ellipsis = '...') => {
+  const _str = str;
+  const strLength = str.length;
+  if (strLength > minChars) {
+    const ellipsisLength = ellipsis.length;
+
+    if (ellipsisLength > minChars) {
+      return {
+        text: _str,
+        truncatedText: str.substr(strLength - minChars),
+        isTruncated: true
+      };
+    }
+
+    const count = -0.5 * (minChars - strLength - ellipsisLength);
+    const center = strLength / 2;
+
+    return {
+      text: _str,
+      truncatedText: `${str.substr(0, center - count)}${ellipsis}${str.substr(
+        strLength - center + count
+      )}`,
+      isTruncated: true
+    };
+  }
+
+  return {
+    text: _str,
+    truncatedText: str,
+    isTruncated: false
+  };
+};
+
+/**
+ * Diff two objects
+ *
+ * @param obj1
+ * @param obj2
+ * @returns {boolean}
+ */
+
+export const diffObj = (obj1, obj2) => {
+  let isSame = true;
+
+  // eslint-disable-next-line no-restricted-syntax
+  for (const p in obj1) {
+    if (typeof obj1[p] === 'object') {
+      const objectValue1 = obj1[p];
+      const objectValue2 = obj2[p];
+
+      // eslint-disable-next-line no-restricted-syntax, guard-for-in
+      for (const value in objectValue1) {
+        isSame = diffObj(objectValue1[value], objectValue2[value]);
+        if (isSame === false) {
+          return false;
+        }
+      }
+    } else if (obj1 !== obj2) {
+      isSame = false;
+    }
+  }
+  return isSame;
+};
+
+/**
+ * Checks whether two given arrays are equal
+ *
+ * @param array1
+ * @param array2
+ * @returns {boolean}
+ */
+
+export const isArrayEqual = (array1, array2) => {
+  return (
+    array1.length === array2.length &&
+    array1.sort().every((value, index) => {
+      return value === array2.sort()[index];
+    })
+  );
+};
+
+/**
+ * Intersect two arrays
+ *
+ * @param array1
+ * @param array2
+ * @returns {array}
+ */
+
+export const arrayIntersection = (array1, array2) => {
+  return array1.filter(element => array2.includes(element));
+};
