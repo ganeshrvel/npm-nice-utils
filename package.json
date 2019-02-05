@@ -5,17 +5,17 @@
   "main": "lib/index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config webpack/webpack.config.base.js",
-    "build": "cross-env NODE_ENV=production webpack --config webpack/webpack.config.base.js",
-    "lint": "cross-env NODE_ENV=development eslint --cache --format=pretty --ext .js --ext .jsx .",
+    "build": "yarn lint && cross-env NODE_ENV=production webpack --config webpack/webpack.config.base.js",
+    "lint": "cross-env NODE_ENV=development eslint --cache --format=pretty --ext .js .",
     "lint-fix": "yarn --silent lint --fix; exit 0",
-    "postlint-fix": "prettier --ignore-path .eslintignore --single-quote --write '**/*.*{js,jsx,json}'",
+    "postlint-fix": "prettier --ignore-path .eslintignore --single-quote --write '**/*.*{js,json}'",
     "precommit": "lint-staged",
     "test": "yarn lint",
     "login": "yarn login",
     "publish": "yarn publish"
   },
   "lint-staged": {
-    "*.{js,jsx}": [
+    "*.{js}": [
       "yarn lint",
       "yarn postlint-fix",
       "git add"
