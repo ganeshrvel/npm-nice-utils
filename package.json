@@ -9,25 +9,9 @@
     "lint": "cross-env NODE_ENV=development eslint --cache --format=pretty --ext .js .",
     "lint-fix": "yarn --silent lint --fix; exit 0",
     "postlint-fix": "prettier --ignore-path .eslintignore --single-quote --write '**/*.*{js,json}'",
-    "precommit": "lint-staged",
     "test": "yarn lint",
     "login": "yarn login",
     "publish": "yarn publish"
-  },
-  "lint-staged": {
-    "*.{js}": [
-      "yarn lint",
-      "yarn postlint-fix",
-      "git add"
-    ],
-    "{*.json,.{babelrc,eslintrc,prettierrc}}": [
-      "prettier --ignore-path .eslintignore --parser json --write",
-      "git add"
-    ],
-    "*.{yml}": [
-      "prettier --ignore-path .eslintignore --single-quote --write",
-      "git add"
-    ]
   },
   "author": "Ganesh Rathinavel",
   "license": "MIT",
@@ -63,8 +47,6 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-promise": "^4.0.1",
-    "husky": "^1.3.1",
-    "lint-staged": "^8.1.0",
     "prettier": "^1.15.3",
     "prettier-eslint": "^8.8.2",
     "webpack": "^4.16.3",
