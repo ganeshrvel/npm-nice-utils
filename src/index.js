@@ -148,6 +148,10 @@ export const isJSON = obj => {
  * @returns {boolean}
  */
 export const isTouchDevice = () => {
+  if (undefinedOrNull(window)) {
+    return false;
+  }
+
   return 'ontouchstart' in window || navigator.msMaxTouchPoints > 0;
 };
 
@@ -166,6 +170,11 @@ export const isiOS = () => {
  * @returns {Promise}
  */
 export const isImageLoaded = src => {
+  if (undefinedOrNull(window)) {
+    // eslint-disable-next-line compat/compat
+    return Promise.resolve(null);
+  }
+
   // eslint-disable-next-line compat/compat
   return new Promise(resolve => {
     const img = new Image();
@@ -184,6 +193,10 @@ export const isImageLoaded = src => {
  * @returns Promise
  */
 export const isElementLoaded = (selector, time = 500) => {
+  if (undefinedOrNull(window)) {
+    return null;
+  }
+
   // eslint-disable-next-line compat/compat
   return new Promise((resolve, reject) => {
     if (typeof selector === 'undefined' || selector === null) {
@@ -321,10 +334,16 @@ export const urls = (url = '') => {
     get(param = '') {
       const data = {};
       if (undefinedOrNull(url) || url === '') {
+        if (undefinedOrNull(window)) {
+          return null;
+        }
+
         url = window.location.href;
       }
 
-      url.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m, key, value) {
+      url = urls(url).getUrlWithoutHash();
+
+      url.replace(/[?&]+([^=&]+)=([^&]*)/gi, (m, key, value) => {
         data[key] = decodeURI(value);
       });
 
@@ -339,6 +358,10 @@ export const urls = (url = '') => {
 
     getUrlWithoutHash() {
       if (undefinedOrNull(url) || url === '') {
+        if (undefinedOrNull(window)) {
+          return null;
+        }
+
         return window.location.href.split('#')[0];
       }
 
@@ -351,6 +374,10 @@ export const urls = (url = '') => {
 
     getHash() {
       if (undefinedOrNull(url) || url === '') {
+        if (undefinedOrNull(window)) {
+          return null;
+        }
+
         return location.hash.replace('#', '').trim();
       }
 
@@ -361,11 +388,11 @@ export const urls = (url = '') => {
       return null;
     },
 
-    parseHash(param) {
-      const _url = undefinedOrNull(url) && url !== '' ? url : '';
+    parseHash(param = '') {
+      const _url = !undefinedOrNull(url) && url !== '' ? url : '';
+      const hash = urls(_url).getHash();
 
-      let hash = urls().getHash(_url);
-      if (hash === '') {
+      if (undefinedOrNull(hash) || hash === '') {
         return null;
       }
 
@@ -373,7 +400,7 @@ export const urls = (url = '') => {
       const data = {};
       let parts;
 
-      for (let i = 0; i < pieces.length; i += i) {
+      for (let i = 0; i < pieces.length; i += 1) {
         parts = pieces[i].split('=');
         if (parts.length < 2) {
           parts.push('');
@@ -392,10 +419,18 @@ export const urls = (url = '') => {
     },
 
     removeHash() {
+      if (undefinedOrNull(window)) {
+        return null;
+      }
+
       window.location.replace('#');
     },
 
     getUrlPath() {
+      if (undefinedOrNull(window)) {
+        return null;
+      }
+
       return window.location.pathname;
     }
   };
@@ -406,12 +441,17 @@ export const urls = (url = '') => {
  *
  * @param param
  */
-export const changeURLHash = param => {
-  if (param === 'undefined' || param == null) {
+export const changeURLHash = (param = '') => {
+  if (undefinedOrNull(window)) {
+    return null;
+  }
+
+  if (undefinedOrNull(param)) {
     param = '';
   } else {
     param = '#' + param;
   }
+
   let scrollV = 0;
   let scrollH = 0;
   let loc = window.location;
@@ -480,7 +520,7 @@ export const stripTags = (input = '', allowed = '') => {
   ).join('');
   const tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi;
   const commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
-  return input.replace(commentsAndPhpTags, '').replace(tags, function($0, $1) {
+  return input.replace(commentsAndPhpTags, '').replace(tags, ($0, $1) => {
     return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
   });
 };

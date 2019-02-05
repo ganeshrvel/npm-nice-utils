@@ -53,4 +53,13 @@ yarn.lock
 package-lock.json
 todo.txt
 *yarn-error.log
-lib
+
+webpack
+test
+src
+babel.config.js
+.prettierrc
+.gitignore
+.eslintignore
+.eslintrc.js
+
