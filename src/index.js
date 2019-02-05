@@ -171,7 +171,6 @@ export const isiOS = () => {
  */
 export const isImageLoaded = src => {
   if (undefinedOrNull(window)) {
-    // eslint-disable-next-line compat/compat
     return Promise.resolve(null);
   }
 
