@@ -14,9 +14,8 @@ module.exports = api => {
         require('@babel/preset-env'),
         {
           targets: {
-            esmodules: true
-          },
-          useBuiltIns: 'usage'
+            edge: '11'
+          }
         }
       ]
     ],

@@ -1,6 +1,6 @@
 {
   "name": "nice-utils",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "A collection of useful utilities for the browser and node.js environments",
   "main": "lib/index.js",
   "scripts": {
