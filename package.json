@@ -1,6 +1,6 @@
 {
   "name": "nice-utils",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A collection of useful utilities for the browser and node.js environments",
   "main": "lib/index.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "lint-fix": "yarn --silent lint --fix; exit 0",
     "postlint-fix": "prettier --ignore-path .eslintignore --single-quote --write '**/*.*{js,json}'",
     "login": "yarn login",
-    "publish": "yarn publish",
+    "publish": "yarn test-all && yarn publish",
     "test": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 jest",
     "test-all": "yarn lint && yarn build && yarn test",
     "test-watch": "yarn test --watch"
