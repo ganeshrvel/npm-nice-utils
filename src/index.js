@@ -48,36 +48,6 @@ export const changeURLHash = (param = '') => {
 };
 
 /**
- * Diff two objects
- *
- * @param obj1
- * @param obj2
- * @returns {boolean}
- */
-export const diffObj = (obj1, obj2) => {
-  let isSame = true;
-
-  // eslint-disable-next-line no-restricted-syntax
-  for (const p in obj1) {
-    if (typeof obj1[p] === 'object') {
-      const objectValue1 = obj1[p];
-      const objectValue2 = obj2[p];
-
-      // eslint-disable-next-line no-restricted-syntax, guard-for-in
-      for (const value in objectValue1) {
-        isSame = diffObj(objectValue1[value], objectValue2[value]);
-        if (isSame === false) {
-          return false;
-        }
-      }
-    } else if (obj1 !== obj2) {
-      isSame = false;
-    }
-  }
-  return isSame;
-};
-
-/**
  * Sanitizes the html tags by escaping the html tags
  *
  * @param str
@@ -102,7 +72,7 @@ export const htmlSanitize = (str = '') => {
 };
 
 /**
- * Checks whether the input variable is an Array
+ * Checks whether the input is an Array
  *
  * @param arr
  * @returns {boolean}
@@ -118,7 +88,7 @@ export const isArray = arr => {
 };
 
 /**
- * Checks whether two given arrays are equal
+ * Checks whether the inputted arrays are equal
  *
  * @param array1
  * @param array2
@@ -180,8 +150,7 @@ export const isFloat = n => {
  * @returns {boolean}
  */
 export const isFunction = fn => {
-  const getType = {};
-  return fn && getType.toString.call(fn) === '[object Function]';
+  return Object.prototype.toString.call(fn) === '[object Function]';
 };
 
 /**
@@ -280,7 +249,12 @@ export const isObject = obj => {
  * @returns {boolean}
  */
 export const isString = str => {
-  return Object.prototype.toString.call(str) !== '[object String]';
+  return (
+    typeof str === 'string' ||
+    (!!str &&
+      typeof str === 'object' &&
+      Object.prototype.toString.call(str) === '[object String]')
+  );
 };
 
 /**
